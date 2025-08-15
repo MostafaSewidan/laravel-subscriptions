@@ -64,13 +64,12 @@ use Spatie\Sluggable\SlugOptions;
  * @method static \Illuminate\Database\Eloquent\Builder|Plan whereTrialPeriod($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Plan whereUpdatedAt($value)
  */
-class Plan extends Model implements Sortable
+class Plan extends Model
 {
     use HasFactory;
     use HasSlug;
     use HasTranslations;
     use SoftDeletes;
-    use SortableTrait;
 
     protected $fillable = [
         'slug',

@@ -14,8 +14,6 @@ use Laravelcm\Subscriptions\Services\Period;
 use Laravelcm\Subscriptions\Traits\BelongsToPlan;
 use Laravelcm\Subscriptions\Traits\HasSlug;
 use Laravelcm\Subscriptions\Traits\HasTranslations;
-use Spatie\EloquentSortable\Sortable;
-use Spatie\EloquentSortable\SortableTrait;
 use Spatie\Sluggable\SlugOptions;
 
 /**
@@ -48,14 +46,13 @@ use Spatie\Sluggable\SlugOptions;
  * @method static \Illuminate\Database\Eloquent\Builder|Feature whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Feature whereValue($value)
  */
-class Feature extends Model implements Sortable
+class Feature extends Model
 {
     use BelongsToPlan;
     use HasFactory;
     use HasSlug;
     use HasTranslations;
     use SoftDeletes;
-    use SortableTrait;
 
     protected $fillable = [
         'plan_id',

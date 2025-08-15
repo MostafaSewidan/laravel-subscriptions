@@ -4,29 +4,33 @@ declare(strict_types=1);
 
 namespace Laravelcm\Subscriptions;
 
-use Spatie\LaravelPackageTools\Commands\InstallCommand;
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
-final class SubscriptionServiceProvider extends PackageServiceProvider
+final class SubscriptionServiceProvider extends ServiceProvider
 {
-    public function configurePackage(Package $package): void
+    /**
+     * Register any application services.
+     */
+    public function register(): void
     {
-        $package->name('laravel-subscriptions')
-            ->hasConfigFile('laravel-subscriptions')
-            ->hasMigrations([
-                'create_plans_table',
-                'create_plan_features_table',
-                'create_plan_subscriptions_table',
-                'create_plan_subscription_usage_table',
-                'remove_unique_slug_on_subscriptions_table',
-                'update_unique_keys_on_features_table',
-            ])
-            ->hasInstallCommand(function (InstallCommand $command): void {
-                $command
-                    ->publishConfigFile()
-                    ->publishMigrations()
-                    ->askToStarRepoOnGitHub('laravelcm/laravel-subscriptions');
-            });
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/laravel-subscriptions.php', 'laravel-subscriptions'
+        );
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/laravel-subscriptions.php' => config_path('laravel-subscriptions.php'),
+            ], 'laravel-subscriptions-config');
+
+            $this->publishes([
+                __DIR__.'/../database/migrations/' => database_path('migrations'),
+            ], 'laravel-subscriptions-migrations');
+        }
     }
 }
